@@ -1,0 +1,25 @@
+services:
+   database:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    container_name: trtc-go-sql-server
+    env_file:
+      - .env
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql-server-data:/var/opt/mssql
+    networks:
+      - trtc-go-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD}", "-C", "-Q", "SELECT 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  trtc-go-network:
+
+volumes:
+  sql-server-data:
