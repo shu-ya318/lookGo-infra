@@ -1,0 +1,22 @@
+USE master;
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'$(DB_NAME)')
+    CREATE DATABASE [$(DB_NAME)];
+GO
+
+USE [$(DB_NAME)];
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.server_principals WHERE name = N'$(DB_USERNAME)')
+    CREATE LOGIN [$(DB_USERNAME)] WITH PASSWORD = N'$(DB_PASSWORD)';
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.database_principals WHERE name = N'$(DB_USERNAME)')
+    CREATE USER [$(DB_USERNAME)] FOR LOGIN [$(DB_USERNAME)];
+GO
+
+ALTER ROLE db_datareader ADD MEMBER [$(DB_USERNAME)];
+ALTER ROLE db_datawriter ADD MEMBER [$(DB_USERNAME)];
+ALTER ROLE db_ddladmin ADD MEMBER [$(DB_USERNAME)];
+GO

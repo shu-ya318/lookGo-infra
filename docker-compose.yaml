@@ -8,12 +8,14 @@ services:
       - "1433:1433"
     volumes:
       - sql-server-data:/var/opt/mssql
+      - ./sql-scripts:/sql-scripts
+    entrypoint: /bin/bash /sql-scripts/init-db.sh
     networks:
       - trtc-go-network
     restart: always
     healthcheck:
       test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD}", "-C", "-Q", "SELECT 1"]
-      interval: 20s
+      interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
@@ -39,11 +41,32 @@ services:
       - trtc-go-network
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/localhost/8080 && printf \"GET /actuator/health/readiness HTTP/1.0\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3 && timeout 3 cat <&3 | grep -q UP'"]
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/8080'"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 180s
+
+  frontend:
+    build:
+      context: ../trtcgo-frontend
+    image: trtcgo-frontend:latest
+    container_name: trtcgo-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - trtc-go-network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost/ > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 
 networks:
   trtc-go-network:
