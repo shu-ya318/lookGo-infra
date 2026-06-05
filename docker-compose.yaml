@@ -15,10 +15,10 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD}", "-C", "-Q", "SELECT 1"]
-      interval: 30s
+      interval: 5s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 40s
 
   redis:
     image: redis:7-alpine
@@ -40,6 +40,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 3
+      start_period: 5s
 
   backend:
     build:
@@ -64,11 +65,12 @@ services:
       - lookGo-network
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health/readiness"]
-      interval: 30s
+      # test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 5s
       timeout: 10s
       retries: 3
-      start_period: 180s
+      start_period: 40s
 
   frontend:
     build:
@@ -84,11 +86,11 @@ services:
       - lookGo-network
     restart: always
     healthcheck:
-      test: ["CMD", "curl -sf http://localhost/"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD", "curl", "-sf" ,"http://localhost/"]
+      interval: 5s
+      timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5s
 
 
 networks:
