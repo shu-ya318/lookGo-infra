@@ -45,6 +45,8 @@ services:
   backend:
     build:
       context: ../lookGo-backend
+      args:
+        - SETTINGS_FILE=${MVN_SETTINGS:-settings-public.xml}
     image: lookgo-backend:latest
     container_name: lookGo-backend
     ports:
@@ -65,7 +67,6 @@ services:
       - lookGo-network
     restart: always
     healthcheck:
-      # test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'"]
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 5s
       timeout: 10s
@@ -78,7 +79,7 @@ services:
     image: lookgo-frontend:latest
     container_name: lookGo-frontend
     ports:
-      - "80:80"
+      - "8081:80"
     depends_on:
       backend:
         condition: service_healthy
