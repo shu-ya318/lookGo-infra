@@ -54,8 +54,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=database
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
     env_file:
       - .env
     depends_on:
