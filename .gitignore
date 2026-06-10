@@ -1,1 +1,3 @@
 .env
+k8s/redis-secret.yaml
+k8s/sqlserver-secret.yaml
