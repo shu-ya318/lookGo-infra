@@ -27,8 +27,9 @@ spec:
     spec:
       containers:
         - name: sqlserver
-          image: mcr.microsoft.com/mssql/server:2025-latest
-          command: ["/bin/bash", "/sql-scripts/init-db.sh"]
+          image: docker.io/library/my-sqlserver:1.0
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/bash", "/opt/mssql-tools18/bin/init-db.sh"]
           ports:
             - containerPort: 1433
           env:
@@ -59,7 +60,7 @@ spec:
               command:
                 - /bin/bash
                 - -c
-                - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -C -Q "SELECT 1"
+                - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '$MSSQL_SA_PASSWORD' -C -Q "SELECT 1"
             initialDelaySeconds: 40
             periodSeconds: 5
             timeoutSeconds: 10
@@ -69,24 +70,24 @@ spec:
               command:
                 - /bin/bash
                 - -c
-                - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -C -Q "SELECT 1"
-            initialDelaySeconds: 40
+                - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '$MSSQL_SA_PASSWORD' -C -Q "SELECT 1"
+            initialDelaySeconds: 60
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
-          volumeMounts:
-            - name: mssql-data
-              mountPath: /var/opt/mssql
-            - name: init-script-volume
-              mountPath: /sql-scripts
-      volumes:
-        - name: mssql-data
-          persistentVolumeClaim:
-            claimName: mssql-pvc
-        - name: init-script-volume
-          configMap:
-            name: mssql-init-scripts
-            defaultMode: 0755
+      #     volumeMounts:
+      #       - name: mssql-data
+      #         mountPath: /var/opt/mssql
+      #       - name: init-script-volume
+      #         mountPath: /sql-scripts
+      # volumes:
+      #   - name: mssql-data
+      #     persistentVolumeClaim:
+      #       claimName: mssql-pvc
+      # - name: init-script-volume
+      #   configMap:
+      #     name: mssql-init-scripts
+      #     defaultMode: 0755
 ---
 apiVersion: v1
 kind: Service
