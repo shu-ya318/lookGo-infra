@@ -79,6 +79,8 @@ services:
     container_name: lookGo-frontend
     ports:
       - "8081:80"
+    environment:
+      - BACKEND_HOST=backend:8080
     depends_on:
       backend:
         condition: service_healthy

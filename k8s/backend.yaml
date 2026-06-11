@@ -48,11 +48,22 @@ spec:
                 secretKeyRef:
                   name: mssql-secret
                   key: db-password
+            - name: REDIS_HOST
+              value: "redis-service"
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: redis-secret
                   key: redis-password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: secret
+            - name: JWT_ACCESS_TOKEN_EXPIRATION
+              value: "900000"
+            - name: JWT_REFRESH_TOKEN_EXPIRATION
+              value: "604800000"
           livenessProbe:
             httpGet:
               path: /actuator/health

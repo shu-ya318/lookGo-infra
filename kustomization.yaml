@@ -6,6 +6,7 @@ resources:
   - k8s/sqlserver-secret.yaml
   - k8s/redis.yaml
   - k8s/redis-secret.yaml
+  - k8s/jwt-secret.yaml
   - k8s/backend.yaml
   - k8s/frontend.yaml
 
