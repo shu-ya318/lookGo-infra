@@ -1,14 +1,29 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mssql-pvc
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: mssql-pv
+#   namespace: default
+# spec:
+#   storageClassName: standard
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+#   capacity:
+#     storage: 2Gi
+#   hostPath:
+#     path: /mnt/data/sqlserver
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mssql-pvc
+#   namespace: default
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 2Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -61,7 +76,7 @@ spec:
                 - /bin/bash
                 - -c
                 - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -C -Q "SELECT 1"
-            initialDelaySeconds: 40
+            initialDelaySeconds: 60
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -84,10 +99,10 @@ spec:
       #   - name: mssql-data
       #     persistentVolumeClaim:
       #       claimName: mssql-pvc
-      # - name: init-script-volume
-      #   configMap:
-      #     name: mssql-init-scripts
-      #     defaultMode: 0755
+      #   - name: init-script-volume
+      #     configMap:
+      #       name: mssql-init-scripts
+      #       defaultMode: 0755
 ---
 apiVersion: v1
 kind: Service

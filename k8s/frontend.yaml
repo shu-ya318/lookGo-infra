@@ -15,7 +15,8 @@ spec:
     spec:
       initContainers:
         - name: wait-for-backend
-          image: busybox:1.36
+          image: docker.io/library/lookgo-busybox:latest
+          imagePullPolicy: IfNotPresent
           command:
             [
               "sh",
@@ -24,7 +25,7 @@ spec:
             ]
       containers:
         - name: frontend
-          image: lookgo-frontend:latest
+          image: docker.io/library/lookgo-frontend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
