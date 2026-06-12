@@ -29,7 +29,7 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: BACKEND_HOST
+            - name: BACKEND_URL
               value: "backend-service:8080"
           livenessProbe:
             httpGet:
