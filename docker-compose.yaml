@@ -24,25 +24,25 @@ services:
       retries: 3
       start_period: 60s
 
-  # redis:
-  #   image: redis:7-alpine
-  #   container_name: lookGo-redis
-  #   ports:
-  #     - "6379:6379"
-  #   environment:
-  #     - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
-  #     - REDISCLI_AUTH=${REDIS_PASSWORD}
-  #   volumes:
-  #     - redis-data:/data
-  #   networks:
-  #     - lookGo-network
-  #   restart: always
-  #   healthcheck:
-  #     test: ["CMD", "redis-cli", "--raw", "ping"]
-  #     interval: 5s
-  #     timeout: 3s
-  #     retries: 3
-  #     start_period: 5s
+  redis:
+    image: redis:7-alpine
+    container_name: lookGo-redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
+      - REDISCLI_AUTH=${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    networks:
+      - lookGo-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
 
   backend:
     build:
@@ -63,12 +63,14 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ACCESS_TOKEN_EXPIRATION=${JWT_ACCESS_TOKEN_EXPIRATION}
       - JWT_REFRESH_TOKEN_EXPIRATION=${JWT_REFRESH_TOKEN_EXPIRATION}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
       - MVN_SETTINGS=settings-nexus.xml
     depends_on:
       database:
         condition: service_healthy
-      # redis:
-      #   condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - lookGo-network
     restart: always

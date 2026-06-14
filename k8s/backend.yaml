@@ -75,6 +75,16 @@ spec:
               value: "900000"
             - name: JWT_REFRESH_TOKEN_EXPIRATION
               value: "604800000"
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mail-username
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mail-password
           livenessProbe:
             httpGet:
               path: /actuator/health

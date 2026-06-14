@@ -1,3 +1,5 @@
 .env
 k8s/redis-secret.yaml
 k8s/sqlserver-secret.yaml
+k8s/backend-secret.yaml
+k8s/jwt-secret.yaml
