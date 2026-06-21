@@ -75,6 +75,11 @@ spec:
               value: "900000"
             - name: JWT_REFRESH_TOKEN_EXPIRATION
               value: "604800000"
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: admin-password
             # - name: MAIL_USERNAME
             #   valueFrom:
             #     secretKeyRef:
