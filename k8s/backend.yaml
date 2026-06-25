@@ -80,6 +80,16 @@ spec:
                 secretKeyRef:
                   name: backend-secret
                   key: admin-password
+            - name: TDX_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: tdx-client-id
+            - name: TDX_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: tdx-client-secret
             # - name: MAIL_USERNAME
             #   valueFrom:
             #     secretKeyRef:
