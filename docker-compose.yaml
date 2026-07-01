@@ -87,6 +87,8 @@ services:
   frontend:
     build:
       context: ../lookGo-frontend
+      args:
+        - NPM_RC_FILE=${NPM_RC_FILE:-.npmrc-public}
     image: lookgo-frontend:latest
     container_name: lookGo-frontend
     ports:
