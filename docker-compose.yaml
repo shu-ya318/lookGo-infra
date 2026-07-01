@@ -70,7 +70,6 @@ services:
       - TDX_CLIENT_SECRET=${TDX_CLIENT_SECRET}
       # - MAIL_USERNAME=${MAIL_USERNAME}
       # - MAIL_PASSWORD=${MAIL_PASSWORD}
-      - MVN_SETTINGS=settings-nexus.xml
     depends_on:
       database:
         condition: service_healthy
