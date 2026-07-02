@@ -29,8 +29,12 @@ spec:
           ports:
             - containerPort: 80
           env:
+            - name: DNS_RESOLVER
+              value: "kube-dns.kube-system.svc.cluster.local" # 確保 hostname 可以被正確解析、拿到 CoreDNS 位址
             - name: BACKEND_URL
-              value: "backend-service:8080"
+              value: "backend-service.default.svc.cluster.local:8080" # 用完整 FQDN ，不能用短名稱
+            - name: NPM_RC_FILE
+              value: "settings-nexus.xml"
           livenessProbe:
             httpGet:
               path: /

@@ -80,6 +80,16 @@ spec:
                 secretKeyRef:
                   name: backend-secret
                   key: admin-password
+            - name: RAIL_PROXY_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: rail-proxy-host
+            - name: RAIL_PROXY_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: rail-proxy-port
             - name: TDX_CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -90,6 +100,8 @@ spec:
                 secretKeyRef:
                   name: backend-secret
                   key: tdx-client-secret
+            - name: MVN_SETTINGS
+              value: "settings-nexus.xml"
             # - name: MAIL_USERNAME
             #   valueFrom:
             #     secretKeyRef:
